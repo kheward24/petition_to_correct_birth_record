@@ -1,0 +1,365 @@
+---
+include:
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.ALMassachusetts:al_massachusetts.yml
+  - docassemble.MassAccess:massaccess.yml
+---
+metadata:
+  title: |
+    Petition to Correct Birth Record
+  short title: |
+    Petition to Correct Birth Record
+  tags:
+    - FA-00-00-00-00
+  authors:
+    - Kendall Heward
+---
+mandatory: True
+comment: |
+  This contains metadata that will not be overwritten if this YAML file is included in another
+  file. Each file gets its own key in the interview_metadata dictionary.
+  Most keys are not currently used at runtime, other than "allowed courts".
+code: |
+  interview_metadata
+  if not defined("interview_metadata['Petition_to_Correct_Birth_Record_5']"):
+    interview_metadata.initializeObject("Petition_to_Correct_Birth_Record_5")
+    interview_metadata["Petition_to_Correct_Birth_Record_5"].update({
+      "al_weaver_version": "1.4.4",
+      "generated on": "2021-11-21",
+      "title": "Petition to Correct Birth Record",
+      "short title": "Petition to Correct Birth Record",
+      "description": "This form is used to correct a child’s birth certificate when the wrong parent was initially listed on the birth certificate.",
+      "original_form": "https://www.mass.gov/doc/courts-dwnld-petition-for-correction-of-birth-record-cjd-118/download",
+      "allowed courts": [
+        "Probate and Family Court",
+      ],
+      "categories": [
+        "FA-00-00-00-00",
+      ],        
+      "logic block variable": "interview_order_Petition_to_Correct_Birth_Record_5",
+      "attachment block variable": "Petition_to_Correct_Birth_Record_5_attachment",
+      "typical role": "plaintiff",
+    })
+---
+code: |
+  interview_metadata['main_interview_key'] =  'Petition_to_Correct_Birth_Record_5'
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "MA"
+---
+code: |
+  github_repo_name =  'docassemble-PetitionToCorrectBirthRecord5'
+---
+code: |
+  interview_short_title = "Ask the court for a new birth certificate with the correct parent listed"
+---
+code: |
+  al_form_type = 'existing_case'
+---
+objects:
+  - users: ALPeopleList.using(there_are_any=True)
+---
+sections:
+  - review_Petition_to_Correct_Birth_Record_5: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_Petition_to_Correct_Birth_Record_5
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["Petition_to_Correct_Birth_Record_5"]["allowed courts"]
+  nav.set_section('review_Petition_to_Correct_Birth_Record_5')
+  user_role = 'plaintiff'
+  users.gather()
+  set_parts(subtitle=str(users))
+  users[0].address.address
+  users[0].address.address
+  set_progress(14)
+  users[0].address.address
+  users[0].address.address
+  users[0].address.address
+  set_progress(28)
+  phone_number_user1
+  users.gather()
+  users[1].birthdate
+  set_progress(42)
+  users2_birth_city
+  trial_court.division
+  ma_court_city
+  set_progress(57)
+  docket_number
+  judgement_date
+  today_date
+  interview_order_Petition_to_Correct_Birth_Record_5 = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  Petition_to_Correct_Birth_Record_5_intro
+  interview_order_Petition_to_Correct_Birth_Record_5
+  signature_date
+  # Save anonymized interview statistics (customize the saved data below)
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  Petition_to_Correct_Birth_Record_5_preview_question
+  basic_questions_signature_flow
+  users[0].signature
+  Petition_to_Correct_Birth_Record_5_download
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Petition_to_Correct_Birth_Record
+continue button field: Petition_to_Correct_Birth_Record_5_intro
+question: |
+  Petition to Correct Birth Record
+subquestion: |
+  Hello! This form will ask you several questions, and afterwards, you will have a completed petition to be filed with the appropriate court. 
+  
+  This form will take approximately 10 minutes to complete.
+  
+  IMPORTANT: This form is ONLY for correcting a Massachusetts birth certificate, where the incorrect parent was initially listed. This form is NOT for additional purposes, such as name changes, and is NOT compatible with other states. 
+  
+  Things you will need to do BEFORE completing this form:
+  
+  1. Conduct paternity or genetic marker testing to determine the child's true parent to be listed on the new birth certificate.
+  
+  2. Obtain an order or judgement from an out of state court, determining the paternity of the child.
+  
+  Documents you will need when filling out this form:
+  
+  1. The child's original birth certificate.
+  
+  2. A copy of the out of state judgement or order establishing the paternity of the child.
+---
+id: Questions about the child who s birth certificate is being corrected
+question: |
+  Questions about the child who’s birth certificate is being corrected
+subquestion: |
+  Please answer these questions about the child who’s birth certificate is being corrected. You may need the child’s current birth certificate to complete this section.
+fields:
+  - "Child's birth city/town": users2_birth_city
+    maxlength: 44
+  - "Child's birth county": users2_birth_county
+    maxlength: 45
+  - "Your relationship to child": users1_relationship
+    maxlength: 47
+---
+id: Questions about the out of state order or judgement establishing the paternity of the child
+question: |
+  Questions about the out of state order or judgement establishing the paternity of the child
+subquestion: |
+  These questions are related to the out of state court order or judgement you obtained before filling out this form. You may need a copy of the out of state judgement to answer these questions.
+fields:
+  - "Date of out of state judgement": judgement_date
+    datatype: date
+  - "Out of state court name": other_court_name
+    maxlength: 47
+  - "Out of state court state": other_court_state
+    maxlength: 30
+  - "Date out of state judgement was presented to Massachusetts court": oosj_present_date
+    datatype: date
+---
+id: Your phone number
+question: |
+  Your phone number
+fields:
+  - "Your phone number": phone_number_user1
+    maxlength: 32
+---
+id: Today s date
+question: |
+  Today's date
+fields:
+  - "Today's date": today_date
+    datatype: date
+---
+id: Massachusetts family probate court city town
+question: |
+  Massachusetts family & probate court city/town
+fields:
+  - "Massachusetts court city/town": ma_court_city
+    maxlength: 62
+---
+id: preview Petition_to_Correct_Birth_Record_5
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Make changes" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_Petition_to_Correct_Birth_Record_5'), label='Make changes', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: Petition_to_Correct_Birth_Record_5_preview_question    
+---
+code: |
+  signature_fields = ['users[0].signature']
+---
+id: Petition to Correct Birth Record 5 review screen
+event: review_Petition_to_Correct_Birth_Record_5
+question: |
+  Review your answers
+review:
+  - Edit: ma_court_city
+    button: |
+      **Massachusetts court city/town**:
+      ${ ma_court_city }
+  - Edit: users2_birth_city
+    button: |
+      **Child\'s birth city/town**:
+      ${ users2_birth_city }
+  - Edit: users2_birth_county
+    button: |
+      **Child\'s birth county**:
+      ${ users2_birth_county }
+  - Edit: users1_relationship
+    button: |
+      **Your relationship to child**:
+      ${ users1_relationship }
+  - Edit: judgement_date
+    button: |
+      **Date of out of state judgement**:
+      ${ judgement_date }
+  - Edit: other_court_name
+    button: |
+      **Out of state court name**:
+      ${ other_court_name }
+  - Edit: other_court_state
+    button: |
+      **Out of state court state**:
+      ${ other_court_state }
+  - Edit: oosj_present_date
+    button: |
+      **Date out of state judgement was presented to Massachusetts court**:
+      ${ oosj_present_date }
+  - Edit: today_date
+    button: |
+      **Today's date**:
+      ${ today_date }
+  - Edit: phone_number_user1
+    button: |
+      **Your phone number**:
+      ${ phone_number_user1 }
+  - Edit: trial_court
+    button: |
+      **trial_court**
+
+      % if defined("trial_court.division"):
+      * division: ${ trial_court.division }
+      % endif
+  - Edit: docket_number
+    button: |
+      **docket_number**:
+      ${ docket_number }
+  - Edit: users.revisit
+    button: |
+      **Users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - Birthdate: |
+      row_item.birthdate if defined("row_item.birthdate") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.state") else ""
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - name.first
+  - birthdate
+  - address.state
+  - signature
+confirm: True
+
+---
+id: download Petition_to_Correct_Birth_Record_5
+event: Petition_to_Correct_Birth_Record_5_download
+question: |
+  Your form is ready to download.
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Make changes" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_Petition_to_Correct_Birth_Record_5'), label='Make changes', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+objects:
+  - Petition_to_Correct_Birth_Record_5_post_interview_instructions: ALDocument.using(title="Instructions", filename="Petition_to_Correct_Birth_Record_5_next_steps.docx", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+  - Petition_to_Correct_Birth_Record_5_attachment: ALDocument.using(title="Petition to Correct Birth Record", filename="Petition_to_Correct_Birth_Record_5.pdf", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+---
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[Petition_to_Correct_Birth_Record_5_post_interview_instructions,Petition_to_Correct_Birth_Record_5_attachment], filename="Petition_to_Correct_Birth_Record_5_package.pdf", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[Petition_to_Correct_Birth_Record_5_attachment], filename="Petition_to_Correct_Birth_Record_5_package.pdf", title="All forms to download for your records", enabled=True)
+---
+attachments:
+  - name: Petition to Correct Birth Record 5 post interview instructions
+    filename: Post-interview-instructions     
+    variable name: Petition_to_Correct_Birth_Record_5_post_interview_instructions[i]        
+    docx template file: Petition_to_Correct_Birth_Record_5_next_steps.docx
+  - name: Petition to Correct Birth Record 5 attachment
+    filename: Petition_to_Correct_Birth_Record_5     
+    variable name: Petition_to_Correct_Birth_Record_5_attachment[i]        
+    skip undefined: True
+    pdf template file: Petition_to_Correct_Birth_Record_5.pdf
+    fields:
+      - "trial_court_division": ${ trial_court.division }
+      - "docket_number": ${ docket_number }
+      - "users1_name__1": ${ users[0] }
+      - "users1_name__2": ${ users[0] }
+      - "users2_name": ${ users[1] }
+      - "users2_birthdate": ${ users[1].birthdate.format() }
+      - "users1_address_address__1": ${ users[0].address.address }
+      - "users1_address_address__2": ${ users[0].address.address }
+      - "users1_address_city__1": ${ users[0].address.city }
+      - "users1_address_city__2": ${ users[0].address.city }
+      - "users1_address_zip__1": ${ users[0].address.zip }
+      - "users1_address_zip__2": ${ users[0].address.zip }
+      - "users1_address_county": ${ users[0].address.county }
+      - "users1_address_state__1": ${ users[0].address.state }
+      - "users1_address_state__2": ${ users[0].address.state }
+      - "users1_signature": ${ users[0].signature_if_final(i) }
+      - "ma_court_city": ${ ma_court_city }
+      - "users2_birth_city": ${ users2_birth_city }
+      - "users2_birth_county": ${ users2_birth_county }
+      - "users1_relationship": ${ users1_relationship }
+      - "judgement_date": ${ judgement_date }
+      - "other_court_name": ${ other_court_name }
+      - "other_court_state": ${ other_court_state }
+      - "oosj_present_date": ${ oosj_present_date }
+      - "today_date": ${ today_date }
+      - "phone_number_user1": ${ phone_number_user1 }
